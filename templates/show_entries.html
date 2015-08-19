@@ -1,21 +1,32 @@
 {% extends "layout.html" %}
 {% block body %}
-  {% if session.logged_in %}
-    <form action="{{ url_for('add_entry') }}" method="post" class="add-entry">
-      <dl>
-        <dt>Title:
-        <dd><input type="text" size="30" name="title">
-        <dt>Text:
-        <dd><textarea name="text" rows="5" cols="40"></textarea>
-        <dd><input type="submit" value="Share">
-      </dl>
+  {% for entry in entries %}
+    <h2>{{ entry.title }} <small>by {{entry.author}}</small> 
+    {% if entry.author == "bk" %} 
+      <span class="label label-success glyphicon glyphicon-ok-circle"> </span> 
+    {% elif entry.author == "Brian Kim" %}
+      <span class="label label-warning glyphicon glyphicon-exclamation-sign"> </span> 
+    {% else %}
+      <span class="label label-danger glyphicon glyphicon-remove-circle"> </span> 
+    {% endif %}
+    </h2>
+    <h4>{{ entry.timestamp.strftime("%b %d, %Y %H:%M") }}</h4>
+    <p>{{ entry.text|safe }}</p>
+    <hr/>
+  {% else %}
+    <em>Unbelievable.  No entries here so far</em>
+  {% endfor %}
+  {% if session.name %}
+    <form action="{{ url_for('add_entry') }}" method="post">
+      <div class="form-group">
+        <label for="title" class="control-label">Title</label>
+        <input type="text" size="30" name="title" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="text" class="control-label">Text</label>
+        <textarea name="text" rows="5" cols="40" class="form-control"></textarea>
+      </div>
+      <div class="form-group"><input type="submit" value="Post" class="btn btn-primary"></div>
     </form>
   {% endif %}
-  {% for entry in entries %}
-  <h2>{{ entry.title }}</h2>
-  <p>{{ entry.text|safe }}</p>
-  <hr/>
-  {% else %}
-  <em>Unbelievable.  No entries here so far</em>
-  {% endfor %}
 {% endblock %}

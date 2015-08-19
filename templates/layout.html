@@ -5,20 +5,14 @@
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 <head>
 <body>
-  <header class="page-header">
-    <center><h1>blog</h1></center>
-  </header>
   <div class="container">
-    <div class="metanav">
-    {% if not session.logged_in %}
-      <a href="{{ url_for('login') }}">log in</a>
-    {% else %}
-      <a href="{{ url_for('logout') }}">log out</a>
-    {% endif %}
-    </div>
-    {% for message in get_flashed_messages() %}
-      <div class="flash">{{ message }}</div>
-    {% endfor %}
+    <header class="page-header">
+      <h1>blog</h1>
+      {% block header %}{% endblock %}
+      {% for message in get_flashed_messages() %}
+        <div class="flash">{{ message }}</div>
+      {% endfor %}
+    </header>
     {% block body %}{% endblock %}
   </div>
 </body>
